@@ -1,4 +1,3 @@
-
 import { styled, useTheme, Theme, CSSObject } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import MuiDrawer from '@mui/material/Drawer';
@@ -16,8 +15,6 @@ import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import InboxIcon from '@mui/icons-material/MoveToInbox';
-import MailIcon from '@mui/icons-material/Mail';
 import { Link } from 'react-router-dom';
 import BusinessIcon from '@mui/icons-material/Business';
 import DashboardIcon from '@mui/icons-material/Dashboard';
@@ -25,44 +22,63 @@ import SupportAgentIcon from '@mui/icons-material/SupportAgent';
 import ViewKanbanIcon from '@mui/icons-material/ViewKanban';
 import AccountBoxIcon from '@mui/icons-material/AccountBox';
 import HelpCenterIcon from '@mui/icons-material/HelpCenter';
+import NoteAddIcon from '@mui/icons-material/NoteAdd';
+import AddTaskIcon from '@mui/icons-material/AddTask';
+import ContactsIcon from '@mui/icons-material/Contacts';
+import EventNoteIcon from '@mui/icons-material/EventNote';
+import BookmarksIcon from '@mui/icons-material/Bookmarks';
+import ChatIcon from '@mui/icons-material/Chat';
+import CampaignIcon from '@mui/icons-material/Campaign';
+import CodeIcon from '@mui/icons-material/Code';
+import AnnouncementIcon from '@mui/icons-material/Announcement';
+import SmartToyIcon from '@mui/icons-material/SmartToy';
+import WebhookIcon from '@mui/icons-material/Webhook';
+import KeyIcon from '@mui/icons-material/Key';
+import IntegrationInstructionsIcon from '@mui/icons-material/IntegrationInstructions';
+import CellWifiIcon from '@mui/icons-material/CellWifi';
+import AttachFileIcon from '@mui/icons-material/AttachFile';
+import PeopleIcon from '@mui/icons-material/People';
+import ChecklistIcon from '@mui/icons-material/Checklist';
+import LocalAtmIcon from '@mui/icons-material/LocalAtm';
+import SettingsIcon from '@mui/icons-material/Settings';
+import SchemaIcon from '@mui/icons-material/Schema';
 
 const userLinks = [
-  {
-    title: 'Área do cliente',
-    link: 'client-area',
-    icon: <BusinessIcon/>,
-  },
-  {
-    title: 'Dashboard',
-    link: 'dashboard',
-    icon: <DashboardIcon/>,
-  },
-  {
-    title: 'Atendimento',
-    link: 'ticket',
-    icon: <SupportAgentIcon/>,
-  },
-  {
-    title: 'Kanban',
-    link: 'kanban',
-    icon: <ViewKanbanIcon/>,
-  },
-  {
-    title: 'Perfil',
-    link: 'profile',
-    icon: <AccountBoxIcon/>,
-  },
-  {
-    title: 'Ajuda',
-    link: 'help',
-    icon: <HelpCenterIcon/>,
-  },
-]
+  { title: 'Área do cliente', link: 'client-area', icon: <BusinessIcon /> },
+  { title: 'Dashboard', link: 'dashboard', icon: <DashboardIcon /> },
+  { title: 'Atendimento', link: 'ticket', icon: <SupportAgentIcon /> },
+  { title: 'Kanban', link: 'kanban', icon: <ViewKanbanIcon /> },
+  { title: 'Respostas rápidas', link: 'quick-messages', icon: <NoteAddIcon /> },
+  { title: 'Tarefas', link: 'tasks', icon: <AddTaskIcon /> },
+  { title: 'Perfil', link: 'profile', icon: <AccountBoxIcon /> },
+  { title: 'Contatos', link: 'contacts', icon: <ContactsIcon /> },
+  { title: 'Agendamentos', link: 'schedule', icon: <EventNoteIcon /> },
+  { title: 'Etiquetas', link: 'tags', icon: <BookmarksIcon /> },
+  { title: 'Chat interno', link: 'chats', icon: <ChatIcon /> },
+  { title: 'Ajuda', link: 'help', icon: <HelpCenterIcon /> },
+];
+
+const managerLinks = [
+  { title: 'Campanhas', link: 'campaigns', icon: <CampaignIcon /> },
+  { title: 'Modelos', link: 'templates', icon: <CodeIcon /> },
+  { title: 'Informativos', link: 'announcements', icon: <AnnouncementIcon /> },
+  { title: 'Open.AI', link: 'prompts', icon: <SmartToyIcon /> },
+  { title: 'Integrações', link: 'queue-integration', icon: <IntegrationInstructionsIcon /> },
+  { title: 'Token de acesso', link: 'token-integration', icon: <KeyIcon /> },
+  { title: 'Webhooks', link: 'integrations-notification', icon: <WebhookIcon /> },
+  { title: 'Conexões', link: 'connections', icon: <CellWifiIcon /> },
+  { title: 'Lista de arquivos', link: 'files', icon: <AttachFileIcon /> },
+  { title: 'Filas e chatbots', link: 'queues', icon: <SchemaIcon /> },
+  { title: 'Usuários', link: 'users', icon: <PeopleIcon /> },
+  { title: 'API', link: 'messages-api', icon: <ChecklistIcon /> },
+  { title: 'Financeiro', link: 'financial', icon: <LocalAtmIcon /> },
+  { title: 'Configurações', link: 'settings', icon: <SettingsIcon /> },
+];
 
 type drawerProps = {
-    open:boolean,
-    setOpen:any
-}
+  open: boolean;
+  setOpen: any;
+};
 
 const drawerWidth = 240;
 
@@ -92,7 +108,6 @@ const DrawerHeader = styled('div')(({ theme }) => ({
   alignItems: 'center',
   justifyContent: 'flex-end',
   padding: theme.spacing(0, 1),
-  // necessary for content to be below app bar
   ...theme.mixins.toolbar,
 }));
 
@@ -135,7 +150,18 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
   }),
 );
 
-export default function SideBar({ setOpen, open }:drawerProps) {
+const StyledDrawer = styled(Drawer)(({ theme }) => ({
+  '& .MuiDrawer-paper': {
+    '&::-webkit-scrollbar': {
+      width: '0px', // Esconde a barra de rolagem no Chrome, Safari e outros navegadores WebKit
+      height: '0px', // Esconde a barra de rolagem horizontal
+    },
+    '-ms-overflow-style': 'none', // Esconde a barra de rolagem no IE e Edge (versão antiga)
+    'scrollbar-width': 'none', // Esconde a barra de rolagem no Firefox
+  },
+}));
+
+export default function SideBar({ setOpen, open }: drawerProps) {
   const theme = useTheme();
 
   const handleDrawerOpen = () => {
@@ -164,11 +190,11 @@ export default function SideBar({ setOpen, open }:drawerProps) {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" noWrap component="div">
-            {'company.name'}
+            Olá, Bruno, bem vindo!
           </Typography>
         </Toolbar>
       </AppBar>
-      <Drawer variant="permanent" open={open}>
+      <StyledDrawer variant="permanent" open={open}>
         <DrawerHeader>
           <IconButton onClick={handleDrawerClose}>
             {theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
@@ -202,12 +228,15 @@ export default function SideBar({ setOpen, open }:drawerProps) {
           ))}
         </List>
         <Divider />
+        <Typography sx={{ padding: '1rem 0 0 1.5rem', fontWeight: 700 }}>
+          {open ? 'Administração' : ''}
+        </Typography>
         <List>
-          {['All mail', 'Trash', 'Spam'].map((text, index) => (
-            <ListItem key={text} disablePadding sx={{ display: 'block' }}>
+          {managerLinks.map((text) => (
+            <ListItem key={text.link} disablePadding sx={{ display: 'block' }}>
               <ListItemButton
-              component={Link}
-                to="/about"
+                component={Link}
+                to={text.link}
                 sx={{
                   minHeight: 48,
                   justifyContent: open ? 'initial' : 'center',
@@ -221,14 +250,14 @@ export default function SideBar({ setOpen, open }:drawerProps) {
                     justifyContent: 'center',
                   }}
                 >
-                  {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+                  {text.icon}
                 </ListItemIcon>
-                <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
+                <ListItemText primary={text.title} sx={{ opacity: open ? 1 : 0 }} />
               </ListItemButton>
             </ListItem>
           ))}
         </List>
-      </Drawer>
+      </StyledDrawer>
       <DrawerHeader />
     </Box>
   );
