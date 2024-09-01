@@ -46,13 +46,13 @@ import SchemaIcon from '@mui/icons-material/Schema';
 const userLinks = [
   { title: 'Área do cliente', link: 'client-area', icon: <BusinessIcon /> },
   { title: 'Dashboard', link: 'dashboard', icon: <DashboardIcon /> },
-  { title: 'Atendimento', link: 'ticket', icon: <SupportAgentIcon /> },
+  { title: 'Atendimento', link: 'tickets', icon: <SupportAgentIcon /> },
   { title: 'Kanban', link: 'kanban', icon: <ViewKanbanIcon /> },
   { title: 'Respostas rápidas', link: 'quick-messages', icon: <NoteAddIcon /> },
   { title: 'Tarefas', link: 'tasks', icon: <AddTaskIcon /> },
   { title: 'Perfil', link: 'profile', icon: <AccountBoxIcon /> },
   { title: 'Contatos', link: 'contacts', icon: <ContactsIcon /> },
-  { title: 'Agendamentos', link: 'schedule', icon: <EventNoteIcon /> },
+  { title: 'Agendamentos', link: 'schedules', icon: <EventNoteIcon /> },
   { title: 'Etiquetas', link: 'tags', icon: <BookmarksIcon /> },
   { title: 'Chat interno', link: 'chats', icon: <ChatIcon /> },
   { title: 'Ajuda', link: 'help', icon: <HelpCenterIcon /> },
@@ -65,7 +65,7 @@ const managerLinks = [
   { title: 'Open.AI', link: 'prompts', icon: <SmartToyIcon /> },
   { title: 'Integrações', link: 'queue-integration', icon: <IntegrationInstructionsIcon /> },
   { title: 'Token de acesso', link: 'token-integration', icon: <KeyIcon /> },
-  { title: 'Webhooks', link: 'integrations-notification', icon: <WebhookIcon /> },
+  { title: 'Webhooks', link: 'integration-notification', icon: <WebhookIcon /> },
   { title: 'Conexões', link: 'connections', icon: <CellWifiIcon /> },
   { title: 'Lista de arquivos', link: 'files', icon: <AttachFileIcon /> },
   { title: 'Filas e chatbots', link: 'queues', icon: <SchemaIcon /> },
@@ -77,7 +77,7 @@ const managerLinks = [
 
 type drawerProps = {
   open: boolean;
-  setOpen: any;
+  setOpen: (value: boolean) => void;
 };
 
 const drawerWidth = 240;
@@ -107,6 +107,7 @@ const DrawerHeader = styled('div')(({ theme }) => ({
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'flex-end',
+  //position:'absolute',
   padding: theme.spacing(0, 1),
   ...theme.mixins.toolbar,
 }));
@@ -150,7 +151,7 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
   }),
 );
 
-const StyledDrawer = styled(Drawer)(({ theme }) => ({
+const StyledDrawer = styled(Drawer)(() => ({
   '& .MuiDrawer-paper': {
     '&::-webkit-scrollbar': {
       width: '0px', // Esconde a barra de rolagem no Chrome, Safari e outros navegadores WebKit
@@ -195,7 +196,7 @@ export default function SideBar({ setOpen, open }: drawerProps) {
         </Toolbar>
       </AppBar>
       <StyledDrawer variant="permanent" open={open}>
-        <DrawerHeader>
+        <DrawerHeader sx={{height:'200px'}}>
           <IconButton onClick={handleDrawerClose}>
             {theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
           </IconButton>
