@@ -2,10 +2,10 @@ import * as React from "react";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Box from "@mui/material/Box";
-import HelpTable from "./HelpTable";
-import HelpForm from "./HelpForm";
-import { Typography } from "@mui/material";
-import OptionsForm from "./OptionsForm";
+import CampaignListTable from "./CampaignListTable";
+import ContactListTable from "./ContactListTable";
+import CampaignSettingForm from "./CampaignSettigsForm";
+import CampaignFileTable from "./CampaignFileTable";
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -36,7 +36,7 @@ function a11yProps(index: number) {
   };
 }
 
-export default function SettingsTabs() {
+export default function CampaignsTabs() {
   const [value, setValue] = React.useState(0);
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
@@ -46,23 +46,29 @@ export default function SettingsTabs() {
 
   return (
     <Box sx={{ width: "100%" }}>
-      <Typography variant="h6" sx={{padding:'1rem 0 1rem 0'}}>Configurações</Typography>
       <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
         <Tabs
           value={value}
           onChange={handleChange}
           aria-label="basic tabs example"
         >
-          <Tab label="Opções" {...a11yProps(0)} />
-          <Tab label="Ajudas" {...a11yProps(1)} />
+          <Tab label="Listagem" {...a11yProps(0)} />
+          <Tab label="Listas de contatos" {...a11yProps(1)} />
+          <Tab label="Configurações" {...a11yProps(2)} />
+          <Tab label="Lista de arquivos" {...a11yProps(3)} />
         </Tabs>
       </Box>
       <CustomTabPanel value={value} index={0}>
-        <OptionsForm/>
+        <CampaignListTable/>
       </CustomTabPanel>
       <CustomTabPanel value={value} index={1}>
-        <HelpForm />
-        <HelpTable />
+        <ContactListTable/>
+      </CustomTabPanel>
+      <CustomTabPanel value={value} index={2}>
+        <CampaignSettingForm/>
+      </CustomTabPanel>
+      <CustomTabPanel value={value} index={3}>
+        <CampaignFileTable/>
       </CustomTabPanel>
     </Box>
   );

@@ -107,8 +107,6 @@ const DrawerHeader = styled('div')(({ theme }) => ({
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'flex-end',
-  //position:'absolute',
-  padding: theme.spacing(0, 1),
   ...theme.mixins.toolbar,
 }));
 
@@ -196,7 +194,7 @@ export default function SideBar({ setOpen, open }: drawerProps) {
         </Toolbar>
       </AppBar>
       <StyledDrawer variant="permanent" open={open}>
-        <DrawerHeader sx={{height:'200px'}}>
+        <DrawerHeader>
           <IconButton onClick={handleDrawerClose}>
             {theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
           </IconButton>
@@ -259,7 +257,6 @@ export default function SideBar({ setOpen, open }: drawerProps) {
           ))}
         </List>
       </StyledDrawer>
-      <DrawerHeader />
     </Box>
   );
 }

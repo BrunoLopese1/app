@@ -7,6 +7,9 @@ import PlansTable from "../components/PlansTable";
 import ModelsTable from "../components/ModelsTable";
 import ContractTable from "../components/ContractsTable";
 import CompaniesTable from "../components/CompaniesTable";
+import ServicesForm from "../components/ServicesForm";
+import SupportSettingsForm from "../components/SupportSettingsForm";
+import { Typography } from "@mui/material";
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -25,7 +28,7 @@ function CustomTabPanel(props: TabPanelProps) {
       aria-labelledby={`simple-tab-${index}`}
       {...other}
     >
-      {value === index && <Box sx={{ p: 3 }}>{children}</Box>}
+      {value === index && <Box>{children}</Box>}
     </div>
   );
 }
@@ -46,6 +49,7 @@ export default function ClientAreaView() {
 
   return (
     <Box sx={{ width: "100%" }}>
+      <Typography>Área do cliente</Typography>
       <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
         <Tabs
           value={value}
@@ -72,7 +76,7 @@ export default function ClientAreaView() {
         <ContractTable />
       </CustomTabPanel>
       <CustomTabPanel value={value} index={3}>
-        <CompaniesTable/>
+        <CompaniesTable />
       </CustomTabPanel>
       <CustomTabPanel value={value} index={4}>
         <PlansTable />
@@ -81,10 +85,10 @@ export default function ClientAreaView() {
         6
       </CustomTabPanel>
       <CustomTabPanel value={value} index={6}>
-        7
+        <ServicesForm />
       </CustomTabPanel>
       <CustomTabPanel value={value} index={7}>
-        8
+        <SupportSettingsForm />
       </CustomTabPanel>
     </Box>
   );

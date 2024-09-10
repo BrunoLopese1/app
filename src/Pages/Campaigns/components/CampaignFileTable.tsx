@@ -6,10 +6,10 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import { Box, Button, InputAdornment, Typography } from "@mui/material";
-import EditIcon from "@mui/icons-material/Edit";
-import DeleteIcon from "@mui/icons-material/Delete";
-import TextField from "@mui/material/TextField";
-import SearchIcon from "@mui/icons-material/Search";
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
+import TextField from '@mui/material/TextField';
+import SearchIcon from '@mui/icons-material/Search';
 
 function createData(
   name: string,
@@ -29,7 +29,7 @@ const rows = [
   createData("Gingerbread", 356, 16.0, 49, 3.9),
 ];
 
-export default function HelpTable() {
+export default function CampaignFileTable() {
   return (
     <Box>
       <Box
@@ -37,40 +37,32 @@ export default function HelpTable() {
           display: "flex",
           flexDirection: "row",
           alignItems: "center",
-          justifyContent: "space-between",
-          padding: "1rem",
+          justifyContent:'space-between',
+          padding:'1rem'
         }}
       >
-        <Typography variant="h5">Ajudas</Typography>
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: "row",
-            alignItems: "center",
-            gap: "1rem",
-          }}
-        >
-          <TextField
-            id="standard-basic"
-            variant="standard"
-            placeholder="Pesquisar"
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">
-                  <SearchIcon />
-                </InputAdornment>
-              ),
-            }}
-          />
-        </Box>
+        <Typography variant="h5">Lista de arquivos</Typography>
+        <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap:'1rem' }}>
+      <TextField
+        id="standard-basic"
+        variant="standard"
+        placeholder="Pesquisar"
+        InputProps={{
+          startAdornment: (
+            <InputAdornment position="start">
+              <SearchIcon />
+            </InputAdornment>
+          ),
+        }}
+      />
+      <Button>Adicionar</Button>
+    </Box>
       </Box>
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
           <TableHead>
             <TableRow>
-              <TableCell align="center">Título</TableCell>
-              <TableCell align="center">Descrição</TableCell>
-              <TableCell align="center">Vídeo</TableCell>
+              <TableCell align="center">Nome</TableCell>             
               <TableCell align="center">Ações</TableCell>
             </TableRow>
           </TableHead>
@@ -83,14 +75,12 @@ export default function HelpTable() {
                 <TableCell component="th" scope="row" align="center">
                   {row.name}
                 </TableCell>
-                <TableCell align="center">{row.fat}</TableCell>
-                <TableCell align="center">{row.fat}</TableCell>
                 <TableCell align="center">
                   <Button>
-                    <EditIcon />
+                    <EditIcon/>
                   </Button>
                   <Button>
-                    <DeleteIcon />
+                  <DeleteIcon/>
                   </Button>
                 </TableCell>
               </TableRow>
