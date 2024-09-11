@@ -5,14 +5,14 @@ import { ApiService } from '../services/Api';
 
 interface AuthContextType {
   isAuthenticated: boolean;
-  login: (username: string, password: string) => Promise<void>;
+  login: (email: string, password: string) => Promise<void>;
   logout: () => void;
   user: { name: string; email: string } | null;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-const apiService = new ApiService('http://seu-api-url.com');
+const apiService = new ApiService('http://localhost:3000');
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<{ name: string; email: string } | null>(null);
@@ -25,18 +25,24 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     onSuccess: (data) => setUser(data),
     onError: () => setUser(null)
   });
+  
 
   const isAuthenticated = !!user;
+  console.log(isAuthenticated)
 
-  const login = async (username: string, password: string) => {
+  const login = async (email: string, password: string) => {
     try {
-      await apiService.post('/login', { username, password });
-      // Recarrega os dados do usuário após login
-      window.location.reload();
+      await apiService.post('/auth/login', { email, password });
+  
+      // Obter dados do usuário após o login
+      const response = await apiService.get<{ name: string; email: string }>('/user');
+      setUser(response.data);
+  
     } catch (error) {
       console.error('Erro ao fazer login:', error);
     }
   };
+  
 
   const logout = () => {
     document.cookie = 'token=; Max-Age=0'; // Remove o cookie de autenticação
