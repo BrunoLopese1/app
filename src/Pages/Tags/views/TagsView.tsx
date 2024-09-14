@@ -1,99 +1,47 @@
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
-import Paper from "@mui/material/Paper";
-import { Box, Button, InputAdornment, Typography } from "@mui/material";
-import EditIcon from '@mui/icons-material/Edit';
-import DeleteIcon from '@mui/icons-material/Delete';
-import TextField from '@mui/material/TextField';
-import SearchIcon from '@mui/icons-material/Search';
+import { useState } from "react";
+import { Box } from "@mui/material";
+import { useTagOperations } from "../viewmodels/useTagOperations";
+import TagsTable from "../components/TagsTable";
+import TagsDrawer from "../components/TagsDrawer";
+import TagsHeader from "../components/TagsHeader";
+import { TagsCreateOrEditForm } from "../components/TagsCreateOrEditForm";
+import { Action, Tag } from "../models/TagsModels";
 
-function createData(
-  name: string,
-  calories: number,
-  fat: number,
-  carbs: number,
-  protein: number
-) {
-  return { name, calories, fat, carbs, protein };
-}
+const defaultTag: Tag = {
+  id: 0,
+  name: '',
+  description: '',
+  companyId: 0,
+  createdAt: new Date(),
+  updatedAt: new Date(),
+  kanban: false,
+  index: 0
+};
 
-const rows = [
-  createData("Frozen yoghurt", 159, 6.0, 24, 4.0),
-  createData("Ice cream sandwich", 237, 9.0, 37, 4.3),
-  createData("Eclair", 262, 16.0, 24, 6.0),
-  createData("Cupcake", 305, 3.7, 67, 4.3),
-  createData("Gingerbread", 356, 16.0, 49, 3.9),
-];
+const TagsView = () => {
+  const { tags } = useTagOperations();
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const [editRow, setEditiRow] = useState<Tag>(defaultTag);
 
-export default function TagsView() {
+  const handleOpenDrawer = () => {
+    setIsDrawerOpen(true);
+  };
+
+  const handleCloseDrawer = () => {
+    setIsDrawerOpen(false);
+  };
+
+  console.log(editRow)
+
   return (
     <Box>
-      <Box
-        sx={{
-          display: "flex",
-          flexDirection: "row",
-          alignItems: "center",
-          justifyContent:'space-between',
-          padding:'1rem'
-        }}
-      >
-        <Typography variant="h5">Etiquetas</Typography>
-        <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap:'1rem' }}>
-      <TextField
-        id="standard-basic"
-        variant="standard"
-        placeholder="Pesquisar"
-        InputProps={{
-          startAdornment: (
-            <InputAdornment position="start">
-              <SearchIcon />
-            </InputAdornment>
-          ),
-        }}
-      />
-      <Button>Nova etiqueta</Button>
-    </Box>
-      </Box>
-      <TableContainer component={Paper}>
-        <Table sx={{ minWidth: 650 }} aria-label="simple table">
-          <TableHead>
-            <TableRow>
-              <TableCell align="center">Nome</TableCell>
-              <TableCell align="center">Registros com Tag</TableCell>
-              <TableCell align="center">Descrição</TableCell>
-              <TableCell align="center">Tipo</TableCell>
-              <TableCell align="center">Ações</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {rows.map((row) => (
-              <TableRow
-                key={row.name}
-                sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-              >
-                <TableCell component="th" scope="row" align="center">
-                  {row.name}
-                </TableCell>
-                <TableCell align="center">{row.carbs}</TableCell>
-                <TableCell align="center">{row.protein}</TableCell>
-                <TableCell align="center">{row.protein}</TableCell>
-                <TableCell align="center">
-                  <Button>
-                    <EditIcon/>
-                  </Button>
-                  <Button>
-                  <DeleteIcon/>
-                  </Button>
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
+      <TagsHeader handleOpenDrawer={handleOpenDrawer} />
+      <TagsTable tags={tags || []} setRow={setEditiRow} />
+      <TagsDrawer isOpen={isDrawerOpen} onClose={handleCloseDrawer}>
+        <TagsCreateOrEditForm action={Action.EDIT} row={editRow} />
+      </TagsDrawer>
     </Box>
   );
-}
+};
+
+export default TagsView;

@@ -32,57 +32,60 @@ import { queryClient } from "./services/queryClient";
 import { AuthProvider } from "./contexts/AuthContext";
 import ProtectedRoute from "./components/ProtectedRoutes/ProtectedRoutes";
 import { Layout } from "./components/Layout/Layout";
+import { LoginProvider } from "./contexts/LoginContext";
 
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
-        <Router>
-          <Routes>
-            <Route path="/login" element={<Login />} />
-            <Route path="/home" element={<Home />} />
-            <Route path="/" element={<Home />} />
-            <Route element={<ProtectedRoute />}>
-              <Route element={<Layout />}>
-                <Route path="/announcements" element={<Announcement />} />
-                <Route path="/campaigns" element={<Campaigns />} />
-                <Route path="/Chats" element={<Chats />} />
-                <Route path="/client-area" element={<ClienteArea />} />
-                <Route path="/connections" element={<Connections />} />
-                <Route path="/contacts" element={<Contacts />} />
-                <Route path="/dashboard" element={<Dashboard />} />
-                <Route path="/files" element={<Files />} />
-                <Route path="/financial" element={<Financial />} />
-                <Route path="/help" element={<Help />} />
-                <Route path="/kanban" element={<Kanban />} />
-                <Route path="/messages-api" element={<MessagesApi />} />
-                <Route path="/profile" element={<Profile />} />
-                <Route path="/prompts" element={<Prompts />} />
-                <Route
-                  path="/queue-integration"
-                  element={<QueueIntegration />}
-                />
-                <Route path="/queues" element={<Queues />} />
-                <Route path="/quick-messages" element={<QuickMessages />} />
-                <Route path="/schedules" element={<Schedules />} />
-                <Route path="/settings" element={<Settings />} />
-                <Route path="/tags" element={<Tags />} />
-                <Route path="/tasks" element={<Tasks />} />
-                <Route path="/templates" element={<Templates />} />
-                <Route path="/tickets" element={<Tickets />} />
-                <Route
-                  path="/token-integration"
-                  element={<TokenIntegration />}
-                />
-                <Route path="/users" element={<Users />} />
-                <Route
-                  path="/integration-notification"
-                  element={<Webhooks />}
-                />
+        <LoginProvider>
+          <Router>
+            <Routes>
+              <Route path="/login" element={<Login />} />
+              <Route path="/home" element={<Home />} />
+              <Route path="/" element={<Home />} />
+              <Route element={<ProtectedRoute />}>
+                <Route element={<Layout />}>
+                  <Route path="/announcements" element={<Announcement />} />
+                  <Route path="/campaigns" element={<Campaigns />} />
+                  <Route path="/Chats" element={<Chats />} />
+                  <Route path="/client-area" element={<ClienteArea />} />
+                  <Route path="/connections" element={<Connections />} />
+                  <Route path="/contacts" element={<Contacts />} />
+                  <Route path="/dashboard" element={<Dashboard />} />
+                  <Route path="/files" element={<Files />} />
+                  <Route path="/financial" element={<Financial />} />
+                  <Route path="/help" element={<Help />} />
+                  <Route path="/kanban" element={<Kanban />} />
+                  <Route path="/messages-api" element={<MessagesApi />} />
+                  <Route path="/profile" element={<Profile />} />
+                  <Route path="/prompts" element={<Prompts />} />
+                  <Route
+                    path="/queue-integration"
+                    element={<QueueIntegration />}
+                  />
+                  <Route path="/queues" element={<Queues />} />
+                  <Route path="/quick-messages" element={<QuickMessages />} />
+                  <Route path="/schedules" element={<Schedules />} />
+                  <Route path="/settings" element={<Settings />} />
+                  <Route path="/tags" element={<Tags />} />
+                  <Route path="/tasks" element={<Tasks />} />
+                  <Route path="/templates" element={<Templates />} />
+                  <Route path="/tickets" element={<Tickets />} />
+                  <Route
+                    path="/token-integration"
+                    element={<TokenIntegration />}
+                  />
+                  <Route path="/users" element={<Users />} />
+                  <Route
+                    path="/integration-notification"
+                    element={<Webhooks />}
+                  />
+                </Route>
               </Route>
-            </Route>
-          </Routes>
-        </Router>
+            </Routes>
+          </Router>
+        </LoginProvider>
       </AuthProvider>
     </QueryClientProvider>
   );

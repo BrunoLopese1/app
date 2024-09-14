@@ -1,11 +1,8 @@
-// hooks/useUsers.ts
+import { ApiService } from './../../../services/Api';
 import { useQuery, useMutation, useQueryClient } from 'react-query';
-import { ApiService } from '../../../services/ApiService';
-//import { API_BASE_URL } from './config';
 
-export const API_BASE_URL = 'http://localhost:3000';
 
-const apiService = new ApiService(API_BASE_URL);
+const apiService = new ApiService();
 
 // Hook para buscar usuários
 export const useUsers = () => {

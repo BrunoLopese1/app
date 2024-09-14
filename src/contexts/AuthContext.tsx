@@ -1,6 +1,4 @@
-// contexts/AuthContext.tsx
-import React, { createContext, useContext, useEffect, useState } from 'react';
-import { useQuery } from 'react-query';
+import React, { createContext, useState } from 'react';
 import { ApiService } from '../services/Api';
 
 interface AuthContextType {
@@ -10,63 +8,62 @@ interface AuthContextType {
   user: { name: string; email: string } | null;
 }
 
-const AuthContext = createContext<AuthContextType | undefined>(undefined);
+export const AuthContext = createContext<AuthContextType | undefined>(undefined);
+AuthContext.displayName = 'AuthContext';
 
 const apiService = new ApiService('http://localhost:3000');
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<{ name: string; email: string } | null>(null);
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
 
-  const { isError } = useQuery('user', async () => {
-    const response = await apiService.get<{ name: string; email: string }>('/user');
-    return response.data;
-  }, {
-    retry: false,
-    onSuccess: (data) => setUser(data),
-    onError: () => setUser(null)
-  });
-  
+  // Verifica se o usuário está autenticado ao carregar o componente
+  // useEffect(() => {
+  //   const checkAuthStatus = async () => {
+  //     const token = localStorage.getItem('token');
 
-  const isAuthenticated = !!user;
-  console.log(isAuthenticated)
+  //     if (token) {
+  //       try {
+  //         const response = await apiService.get<{ name: string; email: string }>('/user');
+  //         setUser(response.data);
+  //         setIsAuthenticated(true);
+  //       } catch (error) {
+  //         console.log(error)
+  //         setUser(null);
+  //         setIsAuthenticated(false);
+  //       }
+  //     } else {
+  //       setUser(null);
+  //       setIsAuthenticated(false);
+  //     }
+  //   };
+
+  //   checkAuthStatus();
+  // }, []);
 
   const login = async (email: string, password: string) => {
     try {
       await apiService.post('/auth/login', { email, password });
-  
-      // Obter dados do usuário após o login
+
       const response = await apiService.get<{ name: string; email: string }>('/user');
       setUser(response.data);
-  
+      setIsAuthenticated(true);
+      localStorage.setItem('token', 'YOUR_TOKEN_HERE'); // Simule o armazenamento do token
     } catch (error) {
       console.error('Erro ao fazer login:', error);
     }
   };
-  
 
   const logout = () => {
-    document.cookie = 'token=; Max-Age=0'; // Remove o cookie de autenticação
+    localStorage.removeItem('token'); // Remove o token
     setUser(null);
+    setIsAuthenticated(false);
     window.location.href = '/login';
   };
-
-  useEffect(() => {
-    if (isError) {
-      setUser(null);
-    }
-  }, [isError]);
 
   return (
     <AuthContext.Provider value={{ isAuthenticated, login, logout, user }}>
       {children}
     </AuthContext.Provider>
   );
-};
-
-export const useAuth = () => {
-  const context = useContext(AuthContext);
-  if (!context) {
-    throw new Error('useAuth deve ser usado dentro de um AuthProvider');
-  }
-  return context;
 };

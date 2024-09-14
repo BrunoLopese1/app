@@ -5,20 +5,20 @@ import axios, {
   AxiosResponse,
   InternalAxiosRequestConfig,
   AxiosResponseHeaders,
-} from 'axios';
+} from "axios";
 
 interface ApiResponse<T> {
   data: T;
   status: number;
   headers: AxiosResponseHeaders;
 }
-
+const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
 export class ApiService {
   private readonly axiosInstance: AxiosInstance;
 
-  constructor(apiUrl: string) {
+  constructor() {
     this.axiosInstance = axios.create({
-      baseURL: apiUrl,
+      baseURL: apiBaseUrl,
       timeout: 5000,
       withCredentials: true, // Permite o envio de cookies HTTP-only
     });
@@ -35,7 +35,7 @@ export class ApiService {
         return config;
       },
       (error: AxiosError): Promise<never> => {
-        console.error('Erro ao configurar a requisição:', error.message);
+        console.error("Erro ao configurar a requisição:", error.message);
         return Promise.reject(error);
       }
     );
@@ -48,7 +48,7 @@ export class ApiService {
       (error: AxiosError): Promise<never> => {
         if (error.response?.status === 401) {
           // Redireciona para login em caso de erro 401 (não autorizado)
-          window.location.href = '/login';
+          window.location.href = "/login";
         }
         return Promise.reject(error);
       }
@@ -56,48 +56,76 @@ export class ApiService {
   }
 
   // Método GET
-  async get<T>(path: string, config?: AxiosRequestConfig): Promise<ApiResponse<T>> {
-    return this.request<T>('GET', path, config);
+  async get<T>(
+    path: string,
+    config?: AxiosRequestConfig
+  ): Promise<ApiResponse<T>> {
+    return this.request<T>("GET", path, config);
   }
 
   // Método POST
-  async post<T>(path: string, data: unknown, config?: AxiosRequestConfig): Promise<ApiResponse<T>> {
-    return this.request<T>('POST', path, { ...config, data });
+  async post<T>(
+    path: string,
+    data: unknown,
+    config?: AxiosRequestConfig
+  ): Promise<ApiResponse<T>> {
+    return this.request<T>("POST", path, { ...config, data });
   }
 
   // Método PUT
-  async put<T>(path: string, data: unknown, config?: AxiosRequestConfig): Promise<ApiResponse<T>> {
-    return this.request<T>('PUT', path, { ...config, data });
+  async put<T>(
+    path: string,
+    data: unknown,
+    config?: AxiosRequestConfig
+  ): Promise<ApiResponse<T>> {
+    return this.request<T>("PUT", path, { ...config, data });
   }
 
   // Método DELETE
-  async delete<T>(path: string, config?: AxiosRequestConfig): Promise<ApiResponse<T>> {
-    return this.request<T>('DELETE', path, config);
+  async delete<T>(
+    path: string,
+    config?: AxiosRequestConfig
+  ): Promise<ApiResponse<T>> {
+    return this.request<T>("DELETE", path, config);
   }
 
   // Método PATCH
-  async patch<T>(path: string, data: unknown, config?: AxiosRequestConfig): Promise<ApiResponse<T>> {
-    return this.request<T>('PATCH', path, { ...config, data });
+  async patch<T>(
+    path: string,
+    data: unknown,
+    config?: AxiosRequestConfig
+  ): Promise<ApiResponse<T>> {
+    return this.request<T>("PATCH", path, { ...config, data });
   }
 
   // Método HEAD
-  async head<T>(path: string, config?: AxiosRequestConfig): Promise<ApiResponse<T>> {
-    return this.request<T>('HEAD', path, config);
+  async head<T>(
+    path: string,
+    config?: AxiosRequestConfig
+  ): Promise<ApiResponse<T>> {
+    return this.request<T>("HEAD", path, config);
   }
 
   // Método OPTIONS
-  async options<T>(path: string, config?: AxiosRequestConfig): Promise<ApiResponse<T>> {
-    return this.request<T>('OPTIONS', path, config);
+  async options<T>(
+    path: string,
+    config?: AxiosRequestConfig
+  ): Promise<ApiResponse<T>> {
+    return this.request<T>("OPTIONS", path, config);
   }
 
   // Método genérico para fazer requisições HTTP
   private async request<T>(
-    method: AxiosRequestConfig['method'],
+    method: AxiosRequestConfig["method"],
     path: string,
     config?: AxiosRequestConfig
   ): Promise<ApiResponse<T>> {
     try {
-      const response = await this.axiosInstance.request<T>({ method, url: path, ...config });
+      const response = await this.axiosInstance.request<T>({
+        method,
+        url: path,
+        ...config,
+      });
       return {
         data: response.data,
         status: response.status,
@@ -107,7 +135,7 @@ export class ApiService {
       if (this.isAxiosError(error)) {
         this.handleRequestError(error);
       } else {
-        console.error('Erro desconhecido:', error);
+        console.error("Erro desconhecido:", error);
       }
       throw error;
     }
@@ -115,7 +143,7 @@ export class ApiService {
 
   // Método para tratar erros de requisição
   private handleRequestError(error: AxiosError): void {
-    console.error('Erro na requisição:', error.message);
+    console.error("Erro na requisição:", error.message);
     // Pode adicionar notificação ao usuário aqui, como toast messages
   }
 

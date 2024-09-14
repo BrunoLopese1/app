@@ -1,24 +1,18 @@
-// components/ProtectedRoute.tsx
 import React from 'react';
-import { Navigate, Outlet, useLocation } from 'react-router-dom';
-import { useAuth } from '../../contexts/AuthContext';
+import { Navigate, Outlet } from 'react-router-dom';
+import { useAuth } from '../../hooks/useLoginAuth';
 
 const ProtectedRoute: React.FC = () => {
-  const { isAuthenticated, user } = useAuth();
-  const location = useLocation();
+const isAuthenticated = useAuth();
 
-  if (!user) {
-    return <div>Loading...</div>; // Ou qualquer indicador de carregamento
-  }
-
+  // Se o usuário não estiver autenticado, redireciona para a página de login
   if (!isAuthenticated) {
-    alert("não");
     return <Navigate to="/login" state={{ from: location }} replace />;
   }
 
+  // Se o usuário estiver autenticado, renderiza o conteúdo protegido
   return <Outlet />;
 };
 
 export default ProtectedRoute;
-
 

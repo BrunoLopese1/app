@@ -1,15 +1,23 @@
-// pages/Login/Login.tsx
 import React, { useState } from 'react';
-import { useAuth } from '../../contexts/AuthContext';
+import { useLogin } from '../../hooks/useAuth';
+import { useAuth } from '../../hooks/useLoginAuth';
+import { useNavigate } from 'react-router-dom';
 
 const Login: React.FC = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const { login } = useAuth();
+  const { login } = useLogin();
+  const { isAuthenticated, setIsAuthenticated } = useAuth();
+  const navigate = useNavigate(); // Hook para navegação
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
+    console.log(isAuthenticated);
+    console.log('ok');
     await login(username, password);
+    setIsAuthenticated(true);
+    console.log(isAuthenticated);
+    navigate('/dashboard'); // Use o hook para redirecionar
   };
 
   return (
