@@ -5,41 +5,70 @@ import TagsTable from "../components/TagsTable";
 import TagsDrawer from "../components/TagsDrawer";
 import TagsHeader from "../components/TagsHeader";
 import { TagsCreateOrEditForm } from "../components/TagsCreateOrEditForm";
-import { Action, Tag } from "../models/TagsModels";
+import { ActionEnum, Tag } from "../models/TagsModels";
+import AlertDeleleDialog from "../components/AlertDeleteDialog";
 
 const defaultTag: Tag = {
-  id: 0,
-  name: '',
-  description: '',
-  companyId: 0,
-  createdAt: new Date(),
-  updatedAt: new Date(),
+  name: "",
+  description: "",
   kanban: false,
-  index: 0
+  color: "",
+  companyId: 1,
+  //createdAt: new Date(),
+ // updatedAt: new Date()
 };
 
 const TagsView = () => {
-  const { tags } = useTagOperations();
+  const { tags, handleCreateTag, handleUpdateTag, handleDeleteTag } =
+    useTagOperations();
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-  const [editRow, setEditiRow] = useState<Tag>(defaultTag);
+  const [row, setRow] = useState<Tag>(defaultTag);
+  const [action, setAction] = useState<ActionEnum>(ActionEnum.CREATE);
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
 
-  const handleOpenDrawer = () => {
-    setIsDrawerOpen(true);
+  const handleConfirm = (data: Tag) => {
+    if (action === ActionEnum.CREATE) {
+      handleCreateTag(data);
+    }
+
+    if (action === ActionEnum.EDIT) {
+      handleUpdateTag(data);
+    }
+    console.log(action, data);
   };
 
-  const handleCloseDrawer = () => {
-    setIsDrawerOpen(false);
+  const handleDelete = () => {
+    if (row.id && action === ActionEnum.DELETE) {
+      handleDeleteTag(row.id);
+    }
   };
-
-  console.log(editRow)
 
   return (
     <Box>
-      <TagsHeader handleOpenDrawer={handleOpenDrawer} />
-      <TagsTable tags={tags || []} setRow={setEditiRow} />
-      <TagsDrawer isOpen={isDrawerOpen} onClose={handleCloseDrawer}>
-        <TagsCreateOrEditForm action={Action.EDIT} row={editRow} />
+      <TagsHeader setAction={setAction} setIsDrawerOpen={setIsDrawerOpen} />
+      <TagsTable
+        tags={tags || []}
+        setRow={setRow}
+        handleOpenDrawer={setIsDrawerOpen}
+        handleAction={setAction}
+        handleDeleteDialog={setIsDeleteDialogOpen}
+      />
+      <TagsDrawer isOpen={isDrawerOpen} onClose={setIsDrawerOpen}>
+        <TagsCreateOrEditForm
+          action={action}
+          initialValues={row}
+          defaultValue={defaultTag}
+          handleDrawer={setIsDrawerOpen}
+          handleConfirm={handleConfirm}
+        />
       </TagsDrawer>
+      <AlertDeleleDialog
+        open={isDeleteDialogOpen}
+        setOpen={setIsDeleteDialogOpen}
+        onConfirm={handleDelete}
+        title="Deletar etiqueta"
+        content="Tem certeza que deseja completar essa ação?"
+      />
     </Box>
   );
 };

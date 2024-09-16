@@ -1,50 +1,80 @@
-import { Typography, Box, TextField, Button, Container } from "@mui/material";
-import { Action, Tag } from "../models/TagsModels";
-import { useState } from "react";
+import {
+  Typography,
+  Box,
+  TextField,
+  Button,
+  Switch,
+  FormGroup,
+  FormControlLabel,
+} from "@mui/material";
+import { ActionEnum, Tag } from "../models/TagsModels";
+import { useState, useEffect } from "react";
 
 type TagsCreateOrEditFormProps = {
-  action: Action;
-  row: Tag;
+  action: ActionEnum;
+  initialValues: Tag;
+  defaultValue: Tag;
+  handleDrawer: (value: boolean) => void;
+  handleConfirm: (value:Tag) => void;
 };
 
 export const TagsCreateOrEditForm = ({
-  action
-  }: TagsCreateOrEditFormProps) => {
-    // Estado para armazenar os valores dos campos
-    const [formData, setFormData] = useState({
-      name: '',
-      email: '',
-      message: ''
-    });
-    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-      const { name, value } = event.target;
-      setFormData({ ...formData, [name]: value });
-    };
-    
-    const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-        event.preventDefault();
-        console.log('Form Data:', formData);
-      };
-    return (
-      <>
-      {" "}
-      <Container maxWidth="sm">
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            gap: 2,
-            p: 2,
-            border: "1px solid",
-            borderColor: "grey.300",
-            borderRadius: 1,
-            boxShadow: 1,
-          }}
-        >
-          <Typography variant="h6">{action === Action.CREATE?'criar':'editar'}</Typography>
-          <form onSubmit={handleSubmit}>
+  action,
+  initialValues,
+  defaultValue,
+  handleDrawer,
+  handleConfirm
+}: TagsCreateOrEditFormProps) => {
+  const data = action === ActionEnum.EDIT ? initialValues : defaultValue;
+  const [formData, setFormData] = useState<Tag>(data);
+  const [color, setColor] = useState<string>(data.color || "#ffffff");
+
+  useEffect(() => {
+    setFormData((prevData) => ({ ...prevData, color }));
+  }, [color]);
+
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = event.target;
+    setFormData({ ...formData, [name]: value });
+  };
+
+  const handleSwitchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { checked } = event.target;
+    setFormData({ ...formData, kanban: checked });
+  };
+
+  const handleColorChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setColor(event.target.value);
+  };
+
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    handleConfirm(formData);
+    console.log(formData);
+    handleDrawer(false);
+  };
+
+  return (
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        gap: 2,
+        p: 2,
+        border: "1px solid",
+        borderColor: "grey.300",
+        borderRadius: 1,
+        boxShadow: 1,
+      }}
+    >
+      <Typography variant="h6">
+        {action === ActionEnum.CREATE ? "Criar" : "Editar"}
+      </Typography>
+      <form onSubmit={handleSubmit}>
+        <FormGroup>
+          <Box sx={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
             <TextField
-              label="Name"
+              label="Nome"
               name="name"
               value={formData.name}
               onChange={handleChange}
@@ -52,35 +82,60 @@ export const TagsCreateOrEditForm = ({
               required
             />
             <TextField
-              label="Email"
-              name="email"
-              type="email"
-              value={formData.email}
-              onChange={handleChange}
-              fullWidth
-              required
-            />
-            <TextField
-              label="Message"
-              name="message"
-              value={formData.message}
+              label="Descrição"
+              name="description"
+              value={formData.description}
               onChange={handleChange}
               multiline
               rows={4}
               fullWidth
-              required
             />
-            <Button
-              type="submit"
-              variant="contained"
-              color="primary"
-              sx={{ mt: 2 }}
+            <TextField
+              type="color"
+              value={color}
+              onChange={handleColorChange}
+              label="Escolha uma cor"
+              sx={{ width: 200 }}
+            />
+            <FormControlLabel
+              control={
+                <Switch
+                  checked={formData.kanban}
+                  onChange={handleSwitchChange}
+                  color="primary"
+                />
+              }
+              label="Kanban"
+              labelPlacement="end"
+            />
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "row",
+                gap: "1rem",
+                justifyItems: "center",
+              }}
             >
-              {action === Action.CREATE?'criar':'editar'}
-            </Button>
-          </form>
-        </Box>
-      </Container>
-    </>
+              <Button
+                variant="contained"
+                color="inherit"
+                sx={{ mt: 2 }}
+                onClick={() => handleDrawer(false)}
+              >
+                Cancelar
+              </Button>
+              <Button
+                type="submit"
+                variant="contained"
+                color="primary"
+                sx={{ mt: 2 }}
+              >
+                {action === ActionEnum.CREATE ? "Criar" : "Editar"}
+              </Button>
+            </Box>
+          </Box>
+        </FormGroup>
+      </form>
+    </Box>
   );
 };

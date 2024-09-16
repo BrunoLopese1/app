@@ -7,12 +7,22 @@ import {
   InputAdornment,
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
+import { ActionEnum } from "../models/TagsModels";
 
 interface TagsHeaderProps {
-  handleOpenDrawer: () => void;
+  setAction: (value: ActionEnum) => void;
+  setIsDrawerOpen: (value: boolean) => void;
 }
 
-const TagsHeader: React.FC<TagsHeaderProps> = ({ handleOpenDrawer }) => {
+const TagsHeader: React.FC<TagsHeaderProps> = ({
+  setIsDrawerOpen,
+  setAction,
+}) => {
+  const handleOpenDrawer = () => {
+    setIsDrawerOpen(true);
+    setAction(ActionEnum.CREATE);
+  };
+
   return (
     <Box
       sx={{

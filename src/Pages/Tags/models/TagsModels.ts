@@ -1,15 +1,17 @@
 export interface Tag {
-  id: number;
+  id?: number;
   name: string;
-  companyId: number;
-  createdAt: Date;
-  updatedAt: Date;
+  color: string;
+  companyId?: number;
+  createdAt?: Date;
+  updatedAt?: Date;
   kanban: boolean;
-  description: string;
-  index: number;
+  description?: string;
+  index?: number;
 }
 
-export enum Action {
-  CREATE = 'create',
-  EDIT = 'edit',
+export enum ActionEnum {
+  CREATE = "create",
+  EDIT = "edit",
+  DELETE = "delete",
 }
